@@ -1,23 +1,11 @@
+import getDayOfWeek from "./getDayOfWeek";
+
 export default function displayData(data) {
 
     const dayWeather = document.querySelector(".day-weather");
     dayWeather.textContent = ""; // Clears content of div displaying all weather data
 
-    let days = [];
-
-    let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    
-    for (let i = 0; i < 7; i++) {
-        days.push(data.days[i])
-    }
-
-    let currentDay = days[0];
-    let currentDate = currentDay.datetime; 
-    const [year, month, day] = currentDate.split("-").map(Number); 
-    const dateObj = new Date(year, month - 1, day); 
-    const dayOfWeek = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
-    console.log(dayOfWeek); 
-
+    // Displaying the current day's weather 
     const dayTempSpan = document.createElement('span');
     const dayPrecipitationSpan = document.createElement('span');
     const dayHumiditySpan = document.createElement('span');
@@ -33,10 +21,23 @@ export default function displayData(data) {
     sideDayData.append(dayWindSpan); 
     dayWeather.appendChild(sideDayData);
 
-    // for (let day in days) {
-    //     const dayCard = document.createElement("div");
-    //     const minMaxTemp = document.createElement("span");
-    //     minMaxTemp.textContent = day.tempmin + "° " + day.tempmax + "°";
-    // }
+    // Displaying the week's weather
+    const weekWeather = document.querySelector(".week-weather");
+    weekWeather.textContent = "";
+    for (let i = 0; i < 7; i++) {
+        let day = data.days[i];
+        const dayCard = document.createElement("div");
+        dayCard.classList.add('day-card');
+        const minMaxTemp = document.createElement("span");
+        minMaxTemp.textContent = day.tempmin + "° " + day.tempmax + "°";
+        const dayOfWeek = document.createElement("span");
+        dayOfWeek.textContent = getDayOfWeek(day); 
+        const dayWeather = document.createElement("span");
+        dayWeather.textContent = day.conditions; 
+        dayCard.appendChild(dayOfWeek);
+        dayCard.appendChild(dayWeather);
+        dayCard.append(minMaxTemp); 
+        weekWeather.appendChild(dayCard); 
+    }
 
 }
