@@ -57,3 +57,11 @@ body {
     width: 60px;
     height: 60px;
 }
+
+.day-card span:nth-child(3) {
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+}
