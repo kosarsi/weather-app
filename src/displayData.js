@@ -1,4 +1,5 @@
 import getDayOfWeek from "./getDayOfWeek";
+const icons = require.context('./icons', false, /\.svg$/);
 
 export default function displayData(data) {
 
@@ -22,6 +23,14 @@ export default function displayData(data) {
     dayWeather.appendChild(sideDayData);
 
     // Displaying the week's weather
+
+    const iconMap = {};
+
+    icons.keys().forEach((key) => {
+        const name = key.replace('./', '').replace('.svg', '');
+        iconMap[name] = icons(key);
+    });
+
     const weekWeather = document.querySelector(".week-weather");
     weekWeather.textContent = "";
     for (let i = 0; i < 7; i++) {
@@ -34,7 +43,11 @@ export default function displayData(data) {
         dayOfWeek.textContent = getDayOfWeek(day); 
         const dayWeather = document.createElement("span");
         dayWeather.textContent = day.conditions; 
+        const weatherIcon = document.createElement("img");
+        let icon = day.icon; 
+        weatherIcon.src = iconMap[icon];
         dayCard.appendChild(dayOfWeek);
+        dayCard.appendChild(weatherIcon); 
         dayCard.appendChild(dayWeather);
         dayCard.append(minMaxTemp); 
         weekWeather.appendChild(dayCard); 
